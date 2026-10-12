@@ -3,64 +3,101 @@
 
 ## 1. Project Overview
 
-This Data Structures micro-project aims to develop a C++ decision-support system that simulates power-grid damage caused by a severe cyclone and recommends an effective repair order.
+This C++ Data Structures micro-project simulates power-grid damage caused by a severe cyclone and recommends an order for repairing damaged power lines.
 
-The system represents a simplified power grid as a graph containing power stations, substations, cities, facilities and connecting power lines. It prioritizes the restoration of critical services while considering repair time, effort and network connectivity.
+The system models a simplified virtual grid containing one main power station, four city substations, four city distribution networks, and shared infrastructure.
 
 ## 2. Problem Statement
 
-A severe cyclone can damage multiple power lines and substations, causing hospitals, water treatment facilities, communication centres and residential areas to lose electricity. Since repair teams and equipment are limited, the order of repairs can significantly affect how quickly essential services are restored.
+A severe cyclone can damage multiple power lines, leaving hospitals, emergency services, water treatment facilities and residential areas without electricity. Since repairs require time and effort, the order of restoration is important.
 
-Our project uses graph-based algorithms and data structures to analyse damage and recommend suitable repair priorities.
+This project explores how graph-based algorithms and data structures can help identify outages and prioritize repairs.
 
-## 3. Objectives
+## 3. Implemented Prototype Features
 
-- Represent the power grid using a graph.
-- Simulate cyclone damage to power lines.
-- Identify facilities disconnected from the power source.
-- Prioritize repairs based on criticality, repair time and effort.
-- Update the network after repairs or additional failures.
-- Demonstrate the system through a C++ console application.
+- Builds a virtual four-city power grid.
+- Generates random power-line damage scenarios.
+- Displays damaged lines and estimated repair time and effort.
+- Uses BFS to identify locations connected to the power source.
+- Calculates repair priorities using facility importance and estimated repair time.
+- Uses a priority queue to recommend the next eligible repair.
+- Simulates repairs and updates power availability.
+- Allows additional line failures and grid resets.
+- Supports searching for a power line by ID and sorting damaged lines by repair time.
+- Displays a city's tree-like distribution structure.
 
 ## 4. Data Structures and Algorithms
 
-| Concept | Purpose |
+| Concept | Use in the project |
 |---|---|
-| Graph | Represents the power grid and its connections |
-| BFS | Finds locations connected to the power source |
-| DFS | Explores connected locations and distribution branches |
-| Priority Queue | Organizes repair tasks by calculated priority |
-| Greedy Algorithm | Selects a high-benefit repair at each step |
-| Searching and Sorting | Finds and organizes repair information |
-| Tree | Represents branching distribution structures |
+| Graph | Represents locations and power-line connections |
+| BFS | Checks which locations remain connected to the power source |
+| DFS | Included in the proposed design for further connectivity analysis |
+| Priority queue | Organizes eligible repair candidates by priority score |
+| Greedy approach | Selects a high-priority repair at each step |
+| Searching and sorting | Provides line lookup and repair-time ordering |
+| Tree-like structure | Represents the branching distribution layout of a city |
 
-## 5. Proposed Workflow
+## 5. Repair Priority
 
-1. Create the normal power grid.
-2. Generate a cyclone-damage scenario.
-3. Identify damaged lines and affected facilities.
-4. Analyse connectivity using BFS/DFS.
-5. Calculate repair priorities using service importance, time and effort.
-6. Recommend the next repair using a priority queue.
-7. Update the network and recalculate after repairs or new failures.
+The prototype calculates a heuristic score:
 
-## 6. Project Scope
+Priority Score = Potential Facility Priority / Estimated Repair Time
 
-The initial system will use a simplified virtual grid and simulated data. Repair times, effort values and facility priorities are illustrative assumptions, not official utility data.
+Repair effort is used to break ties between candidates.
 
-The system is an educational prototype and is not intended to control a real electricity network.
+The score is a simplified decision-making heuristic. It does not guarantee a globally optimal restoration schedule.
 
-## 7. Future Scope
+## 6. Repository Structure
 
-Future improvements may include an interactive geographical map, live disaster visualization, automatic damage detection, integration with real-world utility data and advanced scheduling for multiple repair crews.
+- `src/main.cpp` — C++ console application
+- `diagrams/power_grid.md` — Virtual grid diagram
+- `docs/algorithm_workflow.md` — Restoration workflow
+- `tests/test_cases.md` — Planned manual test cases
+- `README.md` — Project overview and instructions
 
-## 8. Technology
+## 7. How to Run
 
-- Programming Language: C++
-- Development Environment: Visual Studio Code
-- Version Control: Git and GitHub
-- Diagrams: Mermaid and Excalidraw
+A C++17 compiler such as GCC is required.
 
-## 9. Project Status
+From the repository root, compile the program:
 
-The project structure and algorithmic design are being developed. Implementation and testing will be completed incrementally.
+```bash
+g++ -std=c++17 src/main.cpp -o power_grid
+```
+
+On Windows PowerShell, run:
+
+```powershell
+.\power_grid.exe
+```
+
+On Linux or macOS, run:
+
+```bash
+./power_grid
+```
+
+## 8. Assumptions and Limitations
+
+- The grid is a simplified virtual model, not a verified real electricity network.
+- Facility priorities, repair times and repair effort values are illustrative assumptions.
+- Repairs are performed one at a time in the console simulation.
+- The repair scheduler uses a heuristic and does not guarantee a globally optimal result.
+- Multi-crew scheduling and explicit resource-allocation constraints are not implemented.
+- The test-case document describes planned checks; each case must be executed before it can be reported as passed.
+
+## 9. Future Scope
+
+- Interactive geographical map and live disaster visualization.
+- Automatic damage detection using suitable external data.
+- Integration with real-world utility infrastructure data.
+- Advanced scheduling for multiple repair crews and limited equipment.
+- More detailed modelling of network disruption and restoration performance.
+
+## 10. Technology
+
+- C++17
+- Visual Studio Code
+- Git and GitHub
+- Mermaid diagrams
