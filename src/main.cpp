@@ -68,7 +68,7 @@ void buildGrid() {
 
         struct Facility { string name; string type; int priority; };
         vector<Facility> facilities = {
-            {"4 Houses", "Residential", 8},
+            {"4 Houses", "Residential", 4},
             {"Hospital", "Hospital", 10},
             {"Police Station", "Emergency Service", 9},
             {"Fire Station", "Emergency Service", 9},
