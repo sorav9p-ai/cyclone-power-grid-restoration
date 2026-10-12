@@ -15,7 +15,6 @@ struct Node {
     int city; // 0 = shared, 1..4 = city
     bool source;
 };
-
 struct Edge {
     int id;
     int u, v;
@@ -58,14 +57,12 @@ void buildGrid() {
     nodes.clear(); edges.clear(); adjacency.clear();
     totalSimulatedHours = totalRepairEffort = completedRepairs = 0;
     mainSource = addNode("Main Power Station", "Power Source", 0, 0, true);
-
     for (int city = 1; city <= 4; ++city) {
         string number = to_string(city);
         int sub = addNode("City " + number + " Substation", "Substation", 0, city);
         int dist = addNode("City " + number + " Distribution", "Distribution Hub", 0, city);
         addEdge(mainSource, sub);
         addEdge(sub, dist);
-
         struct Facility { string name; string type; int priority; };
         vector<Facility> facilities = {
             {"4 Houses", "Residential", 4},
@@ -87,7 +84,6 @@ void buildGrid() {
             addEdge(dist, facility);
         }
     }
-
     int shared = addNode("Shared Infrastructure Hub", "Shared Hub", 0, 0);
     addEdge(mainSource, shared);
     int airport = addNode("Airport", "Transport", 8, 0);
@@ -195,7 +191,6 @@ struct RepairCandidate {
     int potentialPriority;
     double score;
 };
-
 struct CandidateCompare {
     bool operator()(const RepairCandidate& a, const RepairCandidate& b) const {
         if (a.score != b.score) return a.score < b.score;
@@ -204,7 +199,6 @@ struct CandidateCompare {
         return a.edgeId > b.edgeId;
     }
 };
-
 priority_queue<RepairCandidate, vector<RepairCandidate>, CandidateCompare> buildRepairQueue() {
     priority_queue<RepairCandidate, vector<RepairCandidate>, CandidateCompare> pq;
     vector<bool> powered = computePowered();
@@ -254,7 +248,6 @@ void repairNextLine() {
     totalRepairEffort += e.repairEffort;
     ++completedRepairs;
     vector<bool> after = computePowered();
-
     cout << "\nRepair completed: L" << e.id << " (" << nodes[e.u].name << " <-> " << nodes[e.v].name << ")\n";
     cout << "Repair time: " << e.repairTime << "h | Effort: " << e.repairEffort << '\n';
     cout << "Newly powered locations: ";
@@ -269,7 +262,14 @@ void repairNextLine() {
     if (!any) cout << "none immediately";
     cout << "\nCumulative simulated repair time: " << totalSimulatedHours << "h"
          << " | Total effort: " << totalRepairEffort << '\n';
-    showPowerStatus();
+
+    int downCritical = 0;
+    for (const auto& n : nodes) {
+        if (!after[n.id] && n.priority >= 8)
+            ++downCritical;
+    }
+    cout << "Critical/high-priority facilities still without power: "
+         << downCritical << '\n';
 }
 
 void introduceNewFailure() {
